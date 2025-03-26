@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import CreateRoomForm from "@/components/host/CreateRoomForm"
-import Header from "@/components/Header"
+import CreateRoomForm from "@/app/host/components/CreateRoomForm"
+import Header from "@/app/comp/Header"
 
 export const metadata: Metadata = {
   title: "Create Room | SUMA",

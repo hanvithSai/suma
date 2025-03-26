@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
-import { setLoggedIn } from "../../utils/auth"
+import { setLoggedIn } from "../utils/auth"
 
 export default function LoginPage() {
   const searchParams = useSearchParams()
