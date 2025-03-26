@@ -1,8 +1,8 @@
 "use client"
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Button } from "@/app/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/app/components/ui/card"
 import { Trash2, ChevronUp, ChevronDown } from "lucide-react"
 
 interface ContentItem {

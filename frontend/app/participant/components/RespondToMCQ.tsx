@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/app/ui/button"
-import { Label } from "@/app/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/ui/card"
-import { RadioGroup, RadioGroupItem } from "@/app/ui/radio-group"
-import { Progress } from "@/app/ui/progress"
+import { Button } from "@/app/components/ui/button"
+import { Label } from "@/app/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"
+import { RadioGroup, RadioGroupItem } from "@/app/components/ui/radio-group"
+import { Progress } from "@/app/components/ui/progress"
 
 // Sample data
 const sampleMCQ = {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Header from "@/app/comp/Header"
 import Footer from "@/app/comp/Footer"
-import HeroSection from "@/app/landing/HeroSection"
+import HeroSection from "./landing/HeroSection"
 import FeaturesSection from "@/app/landing/FeaturesSection"
 import HowItWorksSection from "@/app/landing/HowItWorksSection"
 

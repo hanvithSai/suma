@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import Header from "@/app/comp/Header"
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/ui/card"
-import { Button } from "@/app/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/ui/tabs"
-import { ScrollArea } from "@/app/ui/scroll-area"
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"
+import { Button } from "@/app/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs"
+import { ScrollArea } from "@/app/components/ui/scroll-area"
 import { ChevronLeft, ChevronRight, BarChart2, MessageSquare } from "lucide-react"
 
 export default function HostRoomView() {

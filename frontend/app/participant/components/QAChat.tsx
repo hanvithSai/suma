@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/app/ui/button"
-import { Input } from "@/app/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/ui/card"
-import { ScrollArea } from "@/app/ui/scroll-area"
-import { Separator } from "@/app/ui/separator"
+import { Button } from "@/app/components/ui/button"
+import { Input } from "@/app/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"
+import { ScrollArea } from "@/app/components/ui/scroll-area"
+import { Separator } from "@/app/components/ui/separator"
 import { Send } from "lucide-react"
 
 // Sample data

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { isLoggedIn, getUsername, logout } from "@/app/utils/auth"
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +11,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "../components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
 import { User, LogOut, Menu, X, PlusCircle, LayoutDashboard } from "lucide-react"
 
 interface HeaderProps {
