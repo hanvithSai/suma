@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
-import Header from "@/app/comp/Header"
-import Footer from "@/app/comp/Footer"
-import HeroSection from "@/app/landing/HeroSection"
-import FeaturesSection from "@/app/landing/FeaturesSection"
-import HowItWorksSection from "@/app/landing/HowItWorksSection"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
+import HeroSection from "./components/HeroSection"
+import FeaturesSection from "./components/FeaturesSection"
+import HowItWorksSection from "./components/HowItWorksSection"
 
 export const metadata: Metadata = {
   title: "SUMA - Interactive Sessions",
