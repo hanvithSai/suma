@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/app/auth/auth-context"
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "../components/ui/card"
@@ -9,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { Label } from "../components/ui/label"
 import { Users, Edit, Eye, PlusCircle, BarChart2, Clock, Calendar, Activity, Search } from "lucide-react"
 import Link from "next/link"
-import { Breadcrumb } from "@/app/comp/Breadcrumb"
 import { Badge } from "../components/ui/badge"
 import { Progress } from "../components/ui/progress"
 
@@ -25,7 +25,7 @@ const recentActivities = [
 const mockRooms = [
   {
     roomName: "JavaScript Fundamentals",
-    roomCode: "JS1234",
+    roomCode: "YCH1PU",
     content: [
       {
         id: "1",
@@ -94,10 +94,10 @@ const mockRooms = [
 
 interface DashboardContentProps {
   initialAction?: string
-  username: string
 }
 
-export default function DashboardContent({ initialAction, username }: DashboardContentProps) {
+export default function DashboardContent({ initialAction }: DashboardContentProps) {
+  const { user } = useAuth()
   const [roomCode, setRoomCode] = useState("")
   const [activeTab, setActiveTab] = useState(initialAction === "join" ? "join" : "create")
   const [savedRooms, setSavedRooms] = useState(mockRooms)
@@ -122,7 +122,7 @@ export default function DashboardContent({ initialAction, username }: DashboardC
     setTimeout(() => {
       setIsJoining(false)
       router.push(`/participant/room/${roomCode}`)
-    }, 1000)
+    }, 500) // Reduced delay for better UX
   }
 
   // Calculate stats
@@ -139,15 +139,11 @@ export default function DashboardContent({ initialAction, username }: DashboardC
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
         <div>
-          <Breadcrumb items={[{ label: "Dashboard", href: "/dashboard" }]} />
-          <h1 className="text-3xl font-bold text-gray-900 mt-2">Welcome, {username}</h1>
-          <p className="text-gray-500">Manage your interactive sessions and view analytics</p>
+          <h1 className="text-3xl font-bold text-foreground mt-2">Welcome, {user?.name}</h1>
+          <p className="text-muted-foreground">Manage your interactive sessions and view analytics</p>
         </div>
         <div className="mt-4 md:mt-0">
-          <Button
-            onClick={() => router.push("/host/create-room")}
-            className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition-all duration-200"
-          >
+          <Button onClick={() => router.push("/host/create-room")} className="gradient-bg">
             <PlusCircle className="mr-2 h-4 w-4" />
             Create New Room
           </Button>
@@ -156,14 +152,14 @@ export default function DashboardContent({ initialAction, username }: DashboardC
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-gradient-to-br from-indigo-50 to-white border-indigo-100">
+        <Card className="gradient-card">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-indigo-600">Total Rooms</p>
-                <h3 className="text-3xl font-bold text-gray-900 mt-1">{savedRooms.length}</h3>
+                <p className="text-sm font-medium text-primary">Total Rooms</p>
+                <h3 className="text-3xl font-bold text-foreground mt-1">{savedRooms.length}</h3>
               </div>
-              <div className="h-12 w-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
+              <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                 <BarChart2 className="h-6 w-6" />
               </div>
             </div>
@@ -171,54 +167,48 @@ export default function DashboardContent({ initialAction, username }: DashboardC
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-white border-purple-100">
+        <Card className="gradient-card">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-purple-600">Total Polls</p>
-                <h3 className="text-3xl font-bold text-gray-900 mt-1">{totalPolls}</h3>
+                <p className="text-sm font-medium text-primary">Total Polls</p>
+                <h3 className="text-3xl font-bold text-foreground mt-1">{totalPolls}</h3>
               </div>
-              <div className="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+              <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                 <Activity className="h-6 w-6" />
               </div>
             </div>
-            <Progress value={60} className="h-1 mt-4 bg-purple-100">
-              <div className="h-full bg-purple-600 rounded-full" />
-            </Progress>
+            <Progress value={60} className="h-1 mt-4" />
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-50 to-white border-blue-100">
+        <Card className="gradient-card">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-blue-600">Total MCQs</p>
-                <h3 className="text-3xl font-bold text-gray-900 mt-1">{totalMCQs}</h3>
+                <p className="text-sm font-medium text-primary">Total MCQs</p>
+                <h3 className="text-3xl font-bold text-foreground mt-1">{totalMCQs}</h3>
               </div>
-              <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+              <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                 <Clock className="h-6 w-6" />
               </div>
             </div>
-            <Progress value={45} className="h-1 mt-4 bg-blue-100">
-              <div className="h-full bg-blue-600 rounded-full" />
-            </Progress>
+            <Progress value={45} className="h-1 mt-4" />
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-white border-green-100">
+        <Card className="gradient-card">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-green-600">Participants</p>
-                <h3 className="text-3xl font-bold text-gray-900 mt-1">{totalParticipants}</h3>
+                <p className="text-sm font-medium text-primary">Participants</p>
+                <h3 className="text-3xl font-bold text-foreground mt-1">{totalParticipants}</h3>
               </div>
-              <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+              <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                 <Users className="h-6 w-6" />
               </div>
             </div>
-            <Progress value={85} className="h-1 mt-4 bg-green-100">
-              <div className="h-full bg-green-600 rounded-full" />
-            </Progress>
+            <Progress value={85} className="h-1 mt-4" />
           </CardContent>
         </Card>
       </div>
@@ -235,30 +225,30 @@ export default function DashboardContent({ initialAction, username }: DashboardC
               </TabsTrigger>
             </TabsList>
             <TabsContent value="create">
-              <Card className="border-2 border-indigo-100 shadow-md hover:shadow-lg transition-all duration-200">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-t-lg">
+              <Card className="gradient-border">
+                <CardHeader className="bg-card/50 rounded-t-lg border-b border-border">
                   <CardTitle>Create a New Interactive Room</CardTitle>
                   <CardDescription>Set up a new session for your participants with polls and MCQs.</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div className="flex flex-col items-center justify-center p-6 bg-indigo-50 rounded-lg">
-                      <Activity className="h-12 w-12 text-indigo-600 mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Create Engaging Polls</h3>
-                      <p className="text-sm text-gray-600 text-center">
+                    <div className="flex flex-col items-center justify-center p-6 bg-primary/5 rounded-lg gradient-border">
+                      <Activity className="h-12 w-12 text-primary mb-4" />
+                      <h3 className="text-lg font-semibold text-foreground mb-2">Create Engaging Polls</h3>
+                      <p className="text-sm text-muted-foreground text-center">
                         Gather opinions and feedback from your audience in real-time.
                       </p>
                     </div>
-                    <div className="flex flex-col items-center justify-center p-6 bg-purple-50 rounded-lg">
-                      <Clock className="h-12 w-12 text-purple-600 mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Timed MCQs</h3>
-                      <p className="text-sm text-gray-600 text-center">
+                    <div className="flex flex-col items-center justify-center p-6 bg-primary/5 rounded-lg gradient-border">
+                      <Clock className="h-12 w-12 text-primary mb-4" />
+                      <h3 className="text-lg font-semibold text-foreground mb-2">Timed MCQs</h3>
+                      <p className="text-sm text-muted-foreground text-center">
                         Test knowledge with multiple-choice questions and timers.
                       </p>
                     </div>
                   </div>
                   <Link href="/host/create-room">
-                    <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    <Button className="w-full gradient-bg shadow-lg hover:shadow-xl">
                       <PlusCircle className="mr-2 h-5 w-5" />
                       Start Creating
                     </Button>
@@ -267,15 +257,15 @@ export default function DashboardContent({ initialAction, username }: DashboardC
               </Card>
             </TabsContent>
             <TabsContent value="join">
-              <Card className="border-2 border-indigo-100 shadow-md hover:shadow-lg transition-all duration-200">
-                <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-t-lg">
+              <Card className="gradient-border">
+                <CardHeader className="bg-card/50 rounded-t-lg border-b border-border">
                   <CardTitle>Join an Existing Room</CardTitle>
                   <CardDescription>Enter the room code to join an interactive session.</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-                    <h3 className="text-sm font-medium text-blue-800 mb-2">How to join a room</h3>
-                    <p className="text-sm text-blue-700">
+                  <div className="mb-6 p-4 bg-primary/5 rounded-lg gradient-border">
+                    <h3 className="text-sm font-medium text-primary mb-2">How to join a room</h3>
+                    <p className="text-sm text-muted-foreground">
                       Enter the 6-character room code provided by the host. Once you join, you'll be able to participate
                       in polls and answer questions.
                     </p>
@@ -294,16 +284,16 @@ export default function DashboardContent({ initialAction, username }: DashboardC
                           className="pl-10 text-lg tracking-wider font-medium h-12"
                           maxLength={6}
                         />
-                        <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+                        <Search className="absolute left-3 top-3.5 h-5 w-5 text-muted-foreground" />
                       </div>
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="bg-gray-50 p-4 rounded-b-lg">
+                <CardFooter className="bg-card/50 p-4 rounded-b-lg border-t border-border">
                   <Button
                     onClick={handleJoinRoom}
                     disabled={!roomCode || roomCode.length < 4 || isJoining}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 h-12"
+                    className="w-full gradient-bg h-12"
                   >
                     {isJoining ? (
                       <>
@@ -342,8 +332,8 @@ export default function DashboardContent({ initialAction, username }: DashboardC
           </Tabs>
 
           {/* Recent Activity */}
-          <Card className="mt-6 border-2 border-gray-100">
-            <CardHeader>
+          <Card className="mt-6 gradient-border">
+            <CardHeader className="border-b border-border">
               <CardTitle>Recent Activity</CardTitle>
               <CardDescription>Latest interactions with your rooms</CardDescription>
             </CardHeader>
@@ -352,17 +342,17 @@ export default function DashboardContent({ initialAction, username }: DashboardC
                 {recentActivities.map((activity) => (
                   <div
                     key={activity.id}
-                    className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-start space-x-4 p-3 rounded-lg hover:bg-secondary transition-colors"
                   >
                     <div
                       className={`h-10 w-10 rounded-full flex items-center justify-center ${
                         activity.type === "join"
-                          ? "bg-green-100 text-green-600"
+                          ? "bg-green-500/10 text-green-500 border border-green-500/30"
                           : activity.type === "create"
-                            ? "bg-indigo-100 text-indigo-600"
+                            ? "bg-primary/10 text-primary border border-primary/30"
                             : activity.type === "poll"
-                              ? "bg-purple-100 text-purple-600"
-                              : "bg-blue-100 text-blue-600"
+                              ? "bg-purple-500/10 text-purple-500 border border-purple-500/30"
+                              : "bg-blue-500/10 text-blue-500 border border-blue-500/30"
                       }`}
                     >
                       {activity.type === "join" && <Users className="h-5 w-5" />}
@@ -372,13 +362,13 @@ export default function DashboardContent({ initialAction, username }: DashboardC
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
-                        <p className="font-medium text-gray-900">
+                        <p className="font-medium text-foreground">
                           {activity.user === "You" ? "You" : activity.user}
                           {activity.type === "join" && " joined "}
                           {activity.type === "create" && " created "}
                           {activity.type === "poll" && " responded to a poll in "}
                           {activity.type === "present" && " presented "}
-                          <span className="text-indigo-600">{activity.room}</span>
+                          <span className="text-primary">{activity.room}</span>
                         </p>
                         <Badge variant="outline" className="text-xs">
                           {activity.time}
@@ -393,11 +383,11 @@ export default function DashboardContent({ initialAction, username }: DashboardC
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="border-2 border-gray-100 shadow-sm">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100">
+          <Card className="gradient-border">
+            <CardHeader className="bg-card/50 border-b border-border">
               <div className="flex items-center justify-between">
                 <CardTitle>Your Rooms</CardTitle>
-                <Badge className="bg-indigo-100 text-indigo-800 hover:bg-indigo-200">{savedRooms.length} Rooms</Badge>
+                <Badge className="bg-primary/10 text-primary border border-primary/30">{savedRooms.length} Rooms</Badge>
               </div>
               <CardDescription>Manage your interactive sessions</CardDescription>
             </CardHeader>
@@ -406,32 +396,32 @@ export default function DashboardContent({ initialAction, username }: DashboardC
                 {savedRooms.map((room) => (
                   <Card
                     key={room.roomCode}
-                    className="overflow-hidden hover:shadow-md transition-all duration-200 border-2 hover:border-indigo-200"
+                    className="overflow-hidden hover:shadow-md transition-all duration-200 gradient-border hover:border-primary/30"
                   >
-                    <CardHeader className="p-4 pb-2">
+                    <CardHeader className="p-4 pb-2 border-b border-border">
                       <div className="flex justify-between items-start">
                         <CardTitle className="text-lg">{room.roomName}</CardTitle>
-                        <Badge variant="outline" className="bg-gray-100">
+                        <Badge variant="outline" className="bg-secondary/50">
                           {room.roomCode}
                         </Badge>
                       </div>
                     </CardHeader>
-                    <CardContent className="p-4 pt-0">
+                    <CardContent className="p-4 pt-2">
                       <div className="flex justify-between text-sm mb-3">
                         <div className="flex items-center">
-                          <Users className="h-4 w-4 text-gray-500 mr-1" />
-                          <span className="text-gray-600">{room.participants} participants</span>
+                          <Users className="h-4 w-4 text-muted-foreground mr-1" />
+                          <span className="text-muted-foreground">{room.participants} participants</span>
                         </div>
                         <div className="flex items-center">
-                          <Calendar className="h-4 w-4 text-gray-500 mr-1" />
-                          <span className="text-gray-600">{room.lastActive}</span>
+                          <Calendar className="h-4 w-4 text-muted-foreground mr-1" />
+                          <span className="text-muted-foreground">{room.lastActive}</span>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 mb-3">
-                        <Badge className="bg-indigo-100 text-indigo-800 hover:bg-indigo-200">
+                        <Badge className="bg-primary/10 text-primary border border-primary/30">
                           Polls: {room.content.filter((item) => item.type === "poll").length}
                         </Badge>
-                        <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">
+                        <Badge className="bg-purple-500/10 text-purple-500 border border-purple-500/30">
                           MCQs: {room.content.filter((item) => item.type === "mcq").length}
                         </Badge>
                       </div>
@@ -457,7 +447,7 @@ export default function DashboardContent({ initialAction, username }: DashboardC
                         <Button
                           variant="default"
                           size="sm"
-                          className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-xs"
+                          className="flex-1 gradient-bg text-xs"
                           onClick={() => router.push(`/host/room/${room.roomCode}`)}
                         >
                           Present
@@ -468,10 +458,10 @@ export default function DashboardContent({ initialAction, username }: DashboardC
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="bg-gray-50 p-4">
+            <CardFooter className="bg-card/50 p-4 border-t border-border">
               <Button
                 variant="outline"
-                className="w-full border-dashed border-2 hover:border-indigo-300 hover:bg-indigo-50"
+                className="w-full border-dashed border-2 hover:border-primary/30 hover:bg-primary/5"
                 onClick={() => router.push("/host/create-room")}
               >
                 <PlusCircle className="mr-2 h-4 w-4" />
@@ -484,3 +474,4 @@ export default function DashboardContent({ initialAction, username }: DashboardC
     </div>
   )
 }
+
