@@ -1,25 +1,28 @@
-// Simplified authentication management (no localStorage)
+// This is a simplified auth management for demonstration purposes.
+// In a real application, you'd want to use a more secure method, possibly involving server-side sessions.
 
-let isAuthenticated = false;
-let username = "John Wick";
-
-export function setLoggedIn() {
-  isAuthenticated = true;
+export function setLoggedIn(username: string) {
+  localStorage.setItem("isLoggedIn", "true")
+  localStorage.setItem("username", username)
 }
 
 export function isLoggedIn(): boolean {
-  return isAuthenticated;
+  return localStorage.getItem("isLoggedIn") === "true"
 }
 
-export function getUsername(): string {
-  return username;
+export function getUsername(): string | null {
+  return localStorage.getItem("username")
 }
 
 export function logout() {
-  isAuthenticated = false;
+  localStorage.removeItem("isLoggedIn")
+  localStorage.removeItem("username")
 }
 
-// Mock function for getting username from Google OAuth
+// This function is now client-side for demonstration
 export async function getUsernameFromGoogleOAuth(): Promise<string> {
-  return username;
+  // In a real app, this would involve a server call to verify the Google OAuth token
+  // and retrieve the user's information
+  return getUsername() || "John Doe"
 }
+

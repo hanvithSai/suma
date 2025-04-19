@@ -1,38 +1,27 @@
 "use client"
 
-import { useSearchParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../components/ui/card"
-import { setLoggedIn } from "../utils/auth"
+import { AuthProvider } from "@/app/auth/auth-context"
 
-export default function LoginPage() {
-  const searchParams = useSearchParams()
+function LoginPage() {
   const router = useRouter()
-  const action = searchParams.get("action")
 
   const handleLogin = () => {
-    // Simulate login process
-    setTimeout(() => {
-      setLoggedIn("John Doe") // In a real app, this would be the actual username
-      router.push("/dashboard")
-    }, 1000)
+    // Simply redirect to dashboard without actual auth
+    router.push("/dashboard")
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Login to SUMA</CardTitle>
-          <CardDescription>
-            {action === "create"
-              ? "Create a new room"
-              : action === "join"
-                ? "Join an existing room"
-                : "Access your account"}
-          </CardDescription>
+          <CardDescription>Access your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <Button onClick={handleLogin} className="w-full">
+          <Button onClick={handleLogin} className="w-full gradient-bg">
             <svg
               className="mr-2 h-4 w-4"
               aria-hidden="true"
@@ -52,10 +41,20 @@ export default function LoginPage() {
           </Button>
         </CardContent>
         <CardFooter>
-          <p className="text-sm text-gray-500">By logging in, you agree to our Terms of Service and Privacy Policy.</p>
+          <p className="text-sm text-muted-foreground">
+            By logging in, you agree to our Terms of Service and Privacy Policy.
+          </p>
         </CardFooter>
       </Card>
     </div>
+  )
+}
+
+export default function LoginPageWithAuth() {
+  return (
+    <AuthProvider>
+      <LoginPage />
+    </AuthProvider>
   )
 }
 

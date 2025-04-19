@@ -8,7 +8,8 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "SUMA - Interactive Sessions",
-  description: "Create and join interactive sessions with polls and MCQs"
+  description: "Create and join interactive sessions with polls and MCQs",
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -17,9 +18,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           {children}
         </ThemeProvider>
       </body>

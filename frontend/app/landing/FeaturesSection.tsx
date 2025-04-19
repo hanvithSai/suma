@@ -1,23 +1,23 @@
 export default function FeaturesSection() {
   return (
-    <div id="features" className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="features" className="py-12 bg-card">
+      <div className="responsive-container">
         <div className="lg:text-center">
-          <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Features</h2>
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-base text-primary font-semibold tracking-wide uppercase">Features</h2>
+          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-foreground sm:text-4xl">
             Everything you need for interactive sessions
           </p>
-          <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+          <p className="mt-4 max-w-2xl text-xl text-muted-foreground lg:mx-auto">
             SUMA provides a comprehensive set of tools for hosts and participants to create engaging, interactive
             experiences.
           </p>
         </div>
 
         <div className="mt-10">
-          <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+          <dl className="responsive-grid-2 gap-y-10">
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md gradient-bg text-white">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
@@ -27,15 +27,15 @@ export default function FeaturesSection() {
                     />
                   </svg>
                 </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Real-time Interaction</p>
+                <p className="ml-16 text-lg leading-6 font-medium text-foreground">Real-time Interaction</p>
               </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
+              <dd className="mt-2 ml-16 text-base text-muted-foreground">
                 Engage with your audience in real-time through live polls, chat, and Q&A sessions.
               </dd>
             </div>
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md gradient-bg text-white">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
@@ -45,28 +45,28 @@ export default function FeaturesSection() {
                     />
                   </svg>
                 </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Multiple-Choice Questions</p>
+                <p className="ml-16 text-lg leading-6 font-medium text-foreground">Multiple-Choice Questions</p>
               </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
+              <dd className="mt-2 ml-16 text-base text-muted-foreground">
                 Create and manage multiple-choice questions to gauge audience understanding and engagement.
               </dd>
             </div>
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md gradient-bg text-white">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Dynamic Data Visualization</p>
+                <p className="ml-16 text-lg leading-6 font-medium text-foreground">Dynamic Data Visualization</p>
               </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
+              <dd className="mt-2 ml-16 text-base text-muted-foreground">
                 Visualize poll results and engagement metrics in real-time with intuitive charts and graphs.
               </dd>
             </div>
             <div className="relative">
               <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md gradient-bg text-white">
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
@@ -76,9 +76,9 @@ export default function FeaturesSection() {
                     />
                   </svg>
                 </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Responsive Design</p>
+                <p className="ml-16 text-lg leading-6 font-medium text-foreground">Responsive Design</p>
               </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
+              <dd className="mt-2 ml-16 text-base text-muted-foreground">
                 Access SUMA from any device with our responsive design, optimized for both desktop and mobile use.
               </dd>
             </div>
