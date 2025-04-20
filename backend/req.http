@@ -1,0 +1,71 @@
+### AUTH FLOW
+GET http://localhost:5000/auth/google
+
+###
+GET http://localhost:5000/auth/google/callback
+
+@baseUrl = http://localhost:5000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZWEyNzdmNzJhYzUzYWIzMDA3ZDRmMCIsImVtYWlsIjoia2FubmF5eWFnYXJpYWR2YWl0aEBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc0NTA3NzUxMCwiZXhwIjoxNzQ1MDgxMTEwfQ.eO9M8FCq1-aay-CwFq7MnqQnn6ccCAq7577WgRP8O5g
+
+### ✅ Create Room
+POST {{baseUrl}}/api/rooms/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "test69697"
+}
+
+### ✅ Send Message to Room
+POST {{baseUrl}}/api/messages/send
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "roomId": "d808f8c4-db74-4802-ab24-41d8b5abee9f",
+  "content": "Hello from REST hii"
+}
+
+###create mcq
+POST {{baseUrl}}/api/mcqs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "roomId": "d808f8c4-db74-4802-ab24-41d8b5abee9f",
+  "question": "What is the capital of France?",
+  "options": ["Berlin", "Madrid", "Paris", "Rome"],
+  "correctAnswer": 2
+}
+
+
+### 🟡 Replace <MCQ_ID> with the ID returned after creating MCQ
+POST http://localhost:5000/api/mcqs/6803c58597b480af647268b5/answer
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "answer": 2
+}
+
+### ✅ Create Poll
+POST {{baseUrl}}/api/polls/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "roomId": "d808f8c4-db74-4802-ab24-41d8b5abee9f",
+  "question": "Do you like Node.js?",
+  "options": ["Yes", "No"]
+}
+
+### 🟡 Replace <POLL_ID> with the ID returned after creating Poll
+
+### ✅ Submit Poll Response
+POST  http://localhost:5000/api/polls/6803c5bb97b480af647268ba/response
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "selectedIndex": 0
+}

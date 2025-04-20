@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Chat Room</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input, button {
+      margin: 5px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+    #messages {
+      list-style: none;
+      padding: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      padding: 10px;
+    }
+    #messages li {
+      padding: 5px;
+      margin-bottom: 5px;
+      border-bottom: 1px dashed #ccc;
+    }
+    .timestamp {
+      color: gray;
+      font-size: 0.8rem;
+      margin-right: 5px;
+    }
+    .nickname {
+      font-weight: bold;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h2>Join Room</h2>
+  <input type="text" id="roomCode" placeholder="Room Code (e.g. A1B2C3)" />
+  <input type="text" id="email" placeholder="Your Email" />
+  <input type="text" id="nickname" placeholder="Nickname" />
+  <button id="joinBtn">Join Room</button>
+
+  <h2>Chat</h2>
+  <input type="text" id="message" placeholder="Type a message" />
+  <button id="sendBtn">Send</button>
+
+  <ul id="messages"></ul>
+
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://localhost:5000");
+    let roomCode = null;
+    let email = null;
+
+    const messagesList = document.getElementById("messages");
+
+    const scrollToBottom = () => {
+      messagesList.scrollTop = messagesList.scrollHeight;
+    };
+
+    document.getElementById("joinBtn").onclick = () => {
+      roomCode = document.getElementById("roomCode").value.trim();
+      email = document.getElementById("email").value.trim();
+      const nickname = document.getElementById("nickname").value.trim();
+
+      if (!roomCode || !email || !nickname) {
+        alert("Please fill all fields to join a room.");
+        return;
+      }
+
+      socket.emit("joinRoom", { roomCode, email, nickname });
+
+      socket.on("joinedRoom", ({ roomCode, nickname }) => {
+        alert(`✅ You joined room: ${roomCode} as ${nickname}`);
+        messagesList.innerHTML = ""; // Clear old messages
+      });
+    };
+
+    document.getElementById("sendBtn").onclick = () => {
+      const content = document.getElementById("message").value.trim();
+      if (!roomCode || !email || !content) {
+        alert("⚠️ Please join a room and write a message.");
+        return;
+      }
+
+      socket.emit("sendMessage", { roomCode, email, content });
+      document.getElementById("message").value = "";
+    };
+
+    socket.on("receiveMessage", ({ content, nickname, timestamp }) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span class="timestamp">[${new Date(timestamp).toLocaleTimeString()}]</span>
+                      <span class="nickname">${nickname}:</span> ${content}`;
+      messagesList.appendChild(li);
+      scrollToBottom();
+    });
+
+    socket.on("previousMessages", (messages) => {
+      messages.forEach(({ content, nickname, timestamp }) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="timestamp">[${new Date(timestamp).toLocaleTimeString()}]</span>
+                        <span class="nickname">${nickname}:</span> ${content}`;
+        messagesList.appendChild(li);
+      });
+      scrollToBottom();
+    });
+
+    socket.on("errorMessage", (msg) => {
+      alert(`❌ ${msg}`);
+    });
+  </script>
+</body>
+</html>
