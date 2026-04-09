@@ -1,0 +1,24 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import { ThemeProvider } from "./context/ThemeContext";
+
+export const metadata: Metadata = {
+  title: "SUMA | Seamless Universal Meeting Assistant",
+  description: "Bridging the gap between speakers and audiences with real-time engagement, polls, and interactive quizzes.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
