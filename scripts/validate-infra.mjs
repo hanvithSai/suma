@@ -1,7 +1,13 @@
-const fs = require('fs');
-const path = require('path');
-const { createClient } = require('@supabase/supabase-js');
-const Ably = require('ably');
+import { createClient } from '@supabase/supabase-js';
+import Ably from 'ably';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// ESM equivalent for __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Load .env.local manually for the script
 const envPath = path.resolve(process.cwd(), '.env.local');
 const envContent = fs.readFileSync(envPath, 'utf8');
@@ -29,7 +35,7 @@ async function validateSupabase() {
   try {
     // Ping Supabase API via a simple query
     // Even if 'rooms' doesn't exist, a response from PostgREST confirms connectivity
-    const { data, error, status } = await supabase.from('rooms').select('id').limit(1);
+    const { error } = await supabase.from('rooms').select('id').limit(1);
     
     if (error) {
       // Any response from PostgREST confirms the URL and Key are valid.
