@@ -48,6 +48,10 @@
 
 ## 5. Sprint Roadmap
 
+### Sprint 0: Setup & Infrastructure
+- **Goal:** Establish the technical foundation.
+- **Features:** Supabase/Ably config, Tailwind v4 migration, Vercel deployment, and Premium Landing Page.
+
 ### Sprint 1: Foundation (The MVP)
 - **Goal:** Get a Host and 10 Participants in a room with a working PDF and Polls.
 - **Features:** Google Auth, PDF Viewer, Standard Poll, Basic Chat.

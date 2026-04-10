@@ -36,7 +36,7 @@
 *   **Real-time Layer**: [Ably](https://ably.com/) (Managed WebSockets)
 *   **Database & Auth**: [Supabase](https://supabase.com/) (PostgreSQL)
 *   **Infrastructure**: [Vercel](https://vercel.com/) (Global Edge Network)
-*   **Styling**: Vanilla CSS with modern Glassmorphism & Neon accents.
+*   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with modern Glassmorphism & Neon accents.
 
 ---
 
@@ -79,9 +79,9 @@ graph TD
 3.  **Environment Setup**:
     Create a `.env.local` file with the following keys:
     ```env
-    NEXT_PUBLIC_ABLY_API_KEY=your_ably_key
-    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
+    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+    ABLY_API_KEY=your-ably-api-key
     ```
 
 4.  **Run Development Server**:

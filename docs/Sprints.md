@@ -1,0 +1,44 @@
+## 5. Sprint Roadmap
+
+### Sprint 0: Setup & Infrastructure
+- **Goal:** Establish the technical foundation and development environment.
+- **Features:**
+    - Initialize Next.js project with TypeScript and Tailwind CSS.
+    - Setup Database (Supabase/PostgreSQL) and Auth providers (Google Auth).
+    - Configure Real-time infrastructure (Ably/WebSockets).
+    - Establish CI/CD pipeline and Vercel deployment environment.
+    - Design and develop a premium, responsive landing page.
+
+### Sprint 1: Foundation (The MVP)
+- **Goal:** Get a Host and 10 Participants in a room with a working PDF and Polls.
+- **Features:** 
+    - Google Auth integration.
+    - Real-time PDF Viewer/Sync.
+    - Standard Poll creation and voting.
+    - Basic chat functionality for participants.
+
+### Sprint 2: Engagement Layer
+- **Goal:** Implement the "Fun" factor to drive user interaction.
+- **Features:** 
+    - Real-time Leaderboards for polls/quizzes.
+    - Reaction Bursts (emojis/floating reactions).
+    - Alias System for anonymous participation.
+
+### Sprint 3: Security & Moderation
+- **Goal:** Harden the platform for 10k+ concurrent users and ensure safety.
+- **Features:** 
+    - Automated Spam Filter for chat.
+    - Co-Host roles and permission management.
+    - Rate limiting for API and socket connections.
+    - Advanced session management and logging.
+
+---
+
+## 6. Product Backlog (Prioritized)
+
+1.  **[High]** QR Code generation for instant room joining.
+2.  **[High]** "Speedster" Bonus logic for Quizzes (faster answers get more points).
+3.  **[Med]** Dark/Light mode persistent theme toggle.
+4.  **[Med]** In-chat GIF and Sticker support.
+5.  **[Low]** Live PDF annotation (Ink support).
+6.  **[Low]** Exportable post-event reports (CSV/PDF).
