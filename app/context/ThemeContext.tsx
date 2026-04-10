@@ -17,17 +17,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // Set mounted on client side
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => setMounted(true), 0);
   }, []);
 
   // Handle theme synchronization
   useEffect(() => {
     const savedTheme = localStorage.getItem("suma-theme") as Theme;
     if (savedTheme && savedTheme !== theme) {
-      setTheme(savedTheme);
+      setTimeout(() => setTheme(savedTheme), 0);
       document.documentElement.setAttribute("data-theme", savedTheme);
     } else if (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches && theme !== "dark") {
-      setTheme("dark");
+      setTimeout(() => setTheme("dark"), 0);
       document.documentElement.setAttribute("data-theme", "dark");
     } else if (savedTheme) {
       document.documentElement.setAttribute("data-theme", savedTheme);
