@@ -15,8 +15,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
+  // Set mounted on client side
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Handle theme synchronization
+  useEffect(() => {
     const savedTheme = localStorage.getItem("suma-theme") as Theme;
     if (savedTheme && savedTheme !== theme) {
       setTheme(savedTheme);
