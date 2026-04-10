@@ -2,12 +2,14 @@
 
 ### Sprint 0: Setup & Infrastructure
 - **Goal:** Establish the technical foundation and development environment.
+- **Status:** ✅ Completed - [Live Deployment](https://suma-h.vercel.app/)
 - **Features:**
-    - Initialize Next.js project with TypeScript and Tailwind CSS.
-    - Setup Database (Supabase/PostgreSQL) and Auth providers (Google Auth).
-    - Configure Real-time infrastructure (Ably/WebSockets).
-    - Establish CI/CD pipeline and Vercel deployment environment.
-    - Design and develop a premium, responsive landing page.
+    - Initialize Next.js project with TypeScript and Tailwind CSS. ✅ *[Completed: 2026-04-10 11:30 IST]*
+    - Setup Database (Supabase/PostgreSQL) and Auth providers (Google Auth). ✅ *[Completed: 2026-04-10 12:45 IST]*
+    - Configure Real-time infrastructure (Ably/WebSockets). ✅ *[Completed: 2026-04-10 14:15 IST]*
+    - Establish CI/CD pipeline and Vercel deployment environment. ✅ *[Completed: 2026-04-10 16:30 IST]*
+    - Design and develop a premium, responsive landing page. ✅ *[Completed: 2026-04-10 18:15 IST]*
+    - Proxy migration & security hardening. ✅ *[Completed: 2026-04-10 19:15 IST]*
 
 ### Sprint 1: Foundation (The MVP)
 - **Goal:** Get a Host and 10 Participants in a room with a working PDF and Polls.

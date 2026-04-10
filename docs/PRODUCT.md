@@ -3,6 +3,8 @@
 ## 1. Vision & Core Value
 **SUMA** (Sanskrit for "Flower" or "Purity", and an acronym for **S**eamless **U**niversal **M**eeting **A**ssistant) aims to humanize large-scale digital interactions. Our goal is to make a 1,000,000-person event feel as intimate as a small seminar by removing barriers to participation.
 
+**Deployed Application:** [https://suma-h.vercel.app/](https://suma-h.vercel.app/)
+
 ## 2. Target Audience
 - **Educators & Professors:** Managing university-wide lectures.
 - **Corporate Leaders:** Conducting Town Halls and AGMs.

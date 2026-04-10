@@ -5,6 +5,8 @@
 > **Bridge the gap between 1 and 1,000,000.**  
 > SUMA is a a highly-scalable, real-time engagement platform designed for massive events. It humanizes large-scale digital interactions by unifying documentation, collaboration, and audience sentiment into a single, premium interface.
 
+**🌐 Live Demo:** [https://suma-h.vercel.app/](https://suma-h.vercel.app/)
+
 ---
 
 ## ✨ Features
