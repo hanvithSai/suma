@@ -2,11 +2,6 @@ import { createClient } from '@supabase/supabase-js';
 import Ably from 'ably';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-// ESM equivalent for __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Load .env.local manually for the script
 const envPath = path.resolve(process.cwd(), '.env.local');
