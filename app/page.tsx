@@ -12,14 +12,26 @@ import {
 } from "lucide-react";
 import Navbar from "./components/Navbar";
 import FeatureCard from "./components/FeatureCard";
+import { useAuth } from "./context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [pin, setPin] = useState("");
+  const { user } = useAuth();
+  const router = useRouter();
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
     if (pin.length === 6) {
       window.location.href = `/room/${pin}`;
+    }
+  };
+
+  const handleHostInit = () => {
+    if (user) {
+      router.push("/host/dashboard");
+    } else {
+      router.push("/login?next=/host/dashboard");
     }
   };
 
@@ -71,7 +83,7 @@ export default function Home() {
               </a>
               <button 
                 className="btn btn-secondary w-full sm:w-auto px-10 py-5 text-lg"
-                onClick={() => window.location.hash = 'action'}
+                onClick={handleHostInit}
               >
                 Start as Host
               </button>
@@ -233,8 +245,11 @@ export default function Home() {
                 </div>
               </div>
 
-              <button className="btn btn-secondary py-6 px-12 text-xl w-full">
-                Initialize Host Mode
+              <button 
+                className="btn btn-secondary py-6 px-12 text-xl w-full"
+                onClick={handleHostInit}
+              >
+                {user ? "Enter Host Dashboard" : "Initialize Host Mode"}
               </button>
             </div>
           </div>
