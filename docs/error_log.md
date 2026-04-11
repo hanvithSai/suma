@@ -133,3 +133,136 @@ This document tracks significant issues, architectural blockers, and bugs encoun
 
 ### Prevention Strategy:
 - Never use non-null assertions on environment variables in the Middleware layer. Always assume they might be missing during initial provisioning.
+---
+
+## Error ID: ERR-005
+**Date:** 2026-04-11  
+**Module/File:** `app/login/page.tsx`  
+**Function Name:** `LoginPage`
+
+### Problem Description:
+- Build Error: `Export Chrome doesn't exist in target module` lucide-react.
+
+### Context:
+- **Environment:** Next.js 16.2.3 (Turbopack)
+- **Problem:** Attempting to import an icon that was either renamed or non-existent in the installed `lucide-react` version.
+
+### Attempts Made:
+1. Researched `lucide-react` icons.
+2. Replaced with `Globe`.
+
+### Root Cause:
+- Version mismatch or removal of the `Chrome` icon in the specific branch/version of `lucide-react` being used (`^1.8.0`).
+
+### Impact:
+- Blocked the production build and local development.
+
+### Final Fix:
+- Replaced the missing `Chrome` icon with the `Globe` icon.
+
+### Why It Worked:
+- Switched to a reliably exported icon that fits the browser/web login context.
+
+### Prevention Strategy:
+- When using specific icons from standard libraries, verify their existence in the local `node_modules` or use more generic common icons if version stability is unknown.
+
+---
+
+## Error ID: ERR-006
+**Date:** 2026-04-11  
+**Module/File:** `app/auth/callback/route.ts`  
+**Function Name:** `GET`
+
+### Problem Description:
+- HTTP ERROR 500: Server-side crash during authentication callback.
+
+### Context:
+- **Environment:** Next.js App Router (Route Handler)
+- **Problem:** `createClient` was called without the required `cookieStore` argument.
+
+### Attempts Made:
+1. Added `cookies` import from `next/headers`.
+2. Passed `await cookies()` to `createClient`.
+
+### Root Cause:
+- Developer error: failing to provide the mandatory dependency (cookies) to the server-side Supabase client helper.
+
+### Impact:
+- Users could not complete the Google Auth flow; resulted in a server crash immediately after provider approval.
+
+### Final Fix:
+- Updated the route handler to correctly await and provide the cookie store: `const supabase = createClient(await cookies());`.
+
+### Why It Worked:
+- Allowed the Supabase SDK to correctly read and write the session cookies required for the Auth exchange.
+
+### Prevention Strategy:
+- Always review the signature of shared utility functions across different environments (Client vs Server). Use TypeScript to enforce argument presence.
+
+---
+
+## Error ID: ERR-007
+**Date:** 2026-04-11  
+**Module/File:** `ci.yml` / `utils/supabase/*.ts`  
+**Function Name:** `createClient`
+
+### Problem Description:
+- CI Build Failure: `@supabase/ssr: Your project's URL and API key are required to create a Supabase client!`.
+
+### Context:
+- **Environment:** GitHub Actions
+- **Problem:** Static generation (prerendering `/_not-found`) executed code that initializes Supabase, but secrets were missing in the build environment.
+
+### Attempts Made:
+1. Added secrets to GitHub Actions.
+2. Verified `ci.yml` configuration.
+
+### Root Cause:
+1. Environment secrets were added to a specific GitHub "Production" environment, but the Action was not configured to use that environment.
+2. The code used non-null assertions (`!`) for env vars, preventing graceful failure during build-time static analysis.
+
+### Impact:
+- Blocked the CI/CD pipeline despite secrets existing in the dashboard.
+
+### Final Fix:
+- Updated `ci.yml` to specify `environment: Production`.
+- Added fallback placeholder values in `utils/supabase` to allow `next build` to complete even if variables are missing.
+
+### Why It Worked:
+- Aligned the CI worker's context with the secrets storage and removed the hard crash at initialization.
+
+### Prevention Strategy:
+- Provide dummy fallbacks for non-secret env vars during build time. Always ensure GitHub Actions are correctly mapped to the environments where secrets reside.
+
+---
+
+## Error ID: ERR-008
+**Date:** 2026-04-11  
+**Module/File:** `next.config.ts`  
+**Function Name:** N/A
+
+### Problem Description:
+- Runtime Error: `Invalid src prop` for `next/image`. `lh3.googleusercontent.com` is not configured.
+
+### Context:
+- **Environment:** Next.js (Local & Production)
+- **Problem:** After showing the Google avatar in the Navbar using the `<Image />` component, the hostname was not whitelisted.
+
+### Attempts Made:
+1. Replaced `<Image />` with `<img>` (rejected for performance/lint).
+2. Added hostname to `next.config.ts`.
+
+### Root Cause:
+- Next.js requires explicit hostname configuration for remote images to prevent security risks and enable optimization.
+
+### Impact:
+- Crashed the UI for logged-in users.
+
+### Final Fix:
+- Added `lh3.googleusercontent.com` to `images.remotePatterns` in `next.config.ts`.
+
+### Why It Worked:
+- Whitelisted the Google avatar domain for the built-in image optimization proxy.
+
+### Prevention Strategy:
+- Whenever integrating third-party OAuth/Avatars, proactively add their image hostnames to the Next.js config.

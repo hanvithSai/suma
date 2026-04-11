@@ -11,13 +11,12 @@
     - Design and develop a premium, responsive landing page. ✅ *[Completed: 2026-04-10 18:15 IST]*
     - Proxy migration & security hardening. ✅ *[Completed: 2026-04-10 19:15 IST]*
 
-### Sprint 1: Foundation (The MVP)
-- **Goal:** Get a Host and 10 Participants in a room with a working PDF and Polls.
-- **Features:** 
-    - Google Auth integration.
-    - Real-time PDF Viewer/Sync.
-    - Standard Poll creation and voting.
-    - Basic chat functionality for participants.
+### Sprint 1: Foundation (Current)
+    - Google Auth integration. ✅ *[Completed: 2026-04-11 23:45 IST]*
+- [ ] **Feature 2: Real-time PDF Viewer/Sync** (Next)
+- [ ] **Feature 3: Dynamic Room Creation**
+- [ ] **Feature 4: Standard Poll creation and voting.**
+- [ ] **Feature 5: Basic chat functionality for participants.**
 
 ### Sprint 2: Engagement Layer
 - **Goal:** Implement the "Fun" factor to drive user interaction.
