@@ -78,3 +78,21 @@ While the technical architecture is designed for 1,000,000 users, **Free Tier** 
 ## 7. System Design Justification
 
 We chose an **Event-Driven Architecture (EDA)**. Instead of the client asking the server if a new slide is available (polling), the server (via Ably) pushes the event to all 1M clients. This reduces CPU load on our primary Vercel functions by 95%, making the 1M goal economically and technically viable.
+
+---
+
+## 8. Security Considerations
+
+### 8.1 Authentication Redirect Security (Double-Lock Mechanism)
+
+To support seamless local development and Vercel branch previews, the application uses a dynamic `getURL()` utility that retrieves `window.location.origin` in the browser environment.
+
+**Safety Justification:**
+While this appears to be an "Open Redirect" pattern, it is secured by a **Double-Lock mechanism**:
+
+1.  **The Client Request (Dynamic):** The frontend requests a redirect back to its current origin (e.g., a specific branch preview URL).
+2.  **The Provider Whitelist (Strict):** The actual authentication provider (Supabase) acts as the authority. It maintains a **Redirect Whitelist**. Even if the client-side code is manipulated to request a malicious URL, Supabase will **reject the redirect** unless that URL is explicitly allowed in the project settings.
+
+**Best Practices Implemented:**
+- Wildcards are used narrowly (e.g., `https://*-hanvith.vercel.app/**`) to allow official preview deployments while preventing redirects to arbitrary external sites.
+- Production and Localhost are explicitly whitelisted as high-trust environments.
