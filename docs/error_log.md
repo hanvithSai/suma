@@ -266,3 +266,37 @@ This document tracks significant issues, architectural blockers, and bugs encoun
 
 ### Prevention Strategy:
 - Whenever integrating third-party OAuth/Avatars, proactively add their image hostnames to the Next.js config.
+
+---
+
+## Error ID: ERR-009
+**Date:** 2026-04-14  
+**Module/File:** `utils/url.ts` / `app/context/AuthContext.tsx`
+**Function Name:** `getURL` / `signInWithGoogle`
+
+### Problem Description:
+- Logins on `localhost` or Vercel preview branches redirected users to the production URL instead of staying on the originating environment.
+
+### Context:
+- **Environment:** Multi-environment deployments (Local, Preview, Production).
+- **Problem:** Auth redirects were either hardcoded or used unreliable detection, causing users to be "pushed" to production after logging in elsewhere.
+
+### Attempts Made:
+1. Used `window.location.host` manually.
+2. Used `process.env.NEXT_PUBLIC_VERCEL_ENV` mapping.
+3. Prioritized `window.location.origin` in a centralized utility.
+
+### Root Cause:
+- Inconsistent base URL determination across client and server environments. Relying purely on environment variables like `VERCEL_ENV` in the browser fails if they aren't explicitly exposed to the client.
+
+### Impact:
+- Fragmented user experience where development and testing on non-prod URLs was impossible without being redirected to production.
+
+### Final Fix:
+- Implemented a unified `getURL()` utility that prioritizes `window.location.origin` in the browser (guaranteeing exact URL persistence) and uses strict environmental mapping on the server.
+
+### Why It Worked:
+- `window.location.origin` is the most accurate representation of the user's current environment in the browser and requires no extra configuration to stay on the correct branch/domain.
+
+### Prevention Strategy:
+- Always use a single, environment-aware utility for generating absolute URLs. Ensure that the authentication provider (Supabase) whitelist includes wildcard patterns (e.g., `https://*-domain.vercel.app/**`) to support dynamic deployments.
