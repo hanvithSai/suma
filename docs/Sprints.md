@@ -13,8 +13,8 @@
 
 ### Sprint 1: Foundation (Current)
     - Google Auth integration. ✅ *[Completed: 2026-04-11 23:45 IST]*
-- [ ] **Feature 2: Real-time PDF Viewer/Sync** (Next)
-- [ ] **Feature 3: Dynamic Room Creation**
+- ✅ **Feature 2: Dynamic Room Creation**  *[Completed: 2026-04-15 21:30 IST]*
+- [ ] **Feature 3: Real-time PDF Viewer/Sync**
 - [ ] **Feature 4: Standard Poll creation and voting.**
 - [ ] **Feature 5: Basic chat functionality for participants.**
 
