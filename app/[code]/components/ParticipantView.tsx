@@ -6,10 +6,15 @@ import { generateAlias } from "@/utils/names";
 
 export default function ParticipantView({ roomCode }: { roomCode: string }) {
   const { client, connectionStatus } = useAbly();
-  const [alias] = useState(() => generateAlias());
+  const [alias, setAlias] = useState("");
+  
+  // Generate alias once on mount to avoid hydration mismatch
+  useEffect(() => {
+    setAlias(generateAlias());
+  }, []);
   
   useEffect(() => {
-    if (!client || connectionStatus !== "connected") return;
+    if (!client || connectionStatus !== "connected" || !alias) return;
 
     const channel = client.channels.get(`room:${roomCode}`);
     

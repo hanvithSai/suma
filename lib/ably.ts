@@ -23,7 +23,12 @@ export const createAblyServerClient = () => {
 
 // API route to issue Ably tokens for client-side usage
 // Use this in an API route: /api/ably-token
-export const createAblyTokenRequest = async () => {
+export const createAblyTokenRequest = async (clientId?: string) => {
   const client = createAblyServerClient();
-  return await client.auth.createTokenRequest();
+  
+  // Presence requires a clientId. If not provided (guest mode), 
+  // we generate a unique random one.
+  const finalClientId = clientId || `guest-${Math.random().toString(36).substring(2, 10)}`;
+  
+  return await client.auth.createTokenRequest({ clientId: finalClientId });
 };
