@@ -377,18 +377,3 @@ This document tracks significant issues, architectural blockers, and bugs encoun
 - Updated the `/api/ably-token` route to provide a `clientId`. Authenticated users use their Supabase ID; guests get a generated unique ID.
 
 ---
-
-## Error ID: ERR-014
-**Date:** 2026-04-15  
-**Module/File:** N/A (Build Process)
-**Function Name:** `npm run build`
-
-### Problem Description:
-- Windows `EPERM` error: `operation not permitted, rmdir ...`.
-
-### Context:
-- **Environment:** Windows 11
-- **Problem:** Files in the `.next` directory were locked by the active `npm run dev` process or an IDE indexer, preventing the build script from cleaning the directory.
-
-### Final Fix:
-- Stopped all dev processes and manually cleared the `.next` folder using `Remove-Item -Recurse -Force .next`.
