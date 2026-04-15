@@ -1,51 +1,28 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext";
-import { createRoomAction } from "@/app/actions/room";
-import { Plus, ArrowLeft, Loader2, Zap } from "lucide-react";
+import React from "react";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { ArrowLeft, Zap, Tv } from "lucide-react";
 import Link from "next/link";
+import { CreateRoomButton } from "./CreateRoomButton";
 
-export default function HostDashboard() {
-  const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
-  const [isCreating, setIsCreating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export default async function HostDashboard() {
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
 
-  useEffect(() => {
-    // Redirect if not authenticated
-    if (!authLoading && !user) {
-      router.push("/login?next=/host/dashboard");
-    }
-  }, [user, authLoading, router]);
+  // Authenticate user on the server
+  const { data: { user } } = await supabase.auth.getUser();
 
-  const handleCreateRoom = async () => {
-    setIsCreating(true);
-    setError(null);
-    try {
-      const result = await createRoomAction();
-      if (result.error) {
-        setError(result.error);
-        setIsCreating(false);
-      } else if (result.code) {
-        // Redirect to the newly created room
-        router.push(`/${result.code}`);
-      }
-    } catch (err) {
-      console.error(err);
-      setError("An unexpected error occurred.");
-      setIsCreating(false);
-    }
-  };
-
-  if (authLoading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-accent-primary animate-spin" />
-      </div>
-    );
+  if (!user) {
+    redirect("/login?next=/host/dashboard");
   }
+
+  // Fetch their latest rooms
+  const { data: rooms } = await supabase
+    .from("rooms")
+    .select("*")
+    .eq("host_id", user.id)
+    .order("created_at", { ascending: false });
 
   return (
     <div className="min-h-screen relative p-8 md:p-16 overflow-hidden">
@@ -86,35 +63,41 @@ export default function HostDashboard() {
               </p>
             </div>
             
-            {error && (
-              <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
-                {error}
-              </div>
-            )}
+            <CreateRoomButton />
 
-            <button 
-              onClick={handleCreateRoom}
-              disabled={isCreating}
-              className="btn btn-primary py-4 mt-4 w-full flex justify-center items-center gap-2 group-hover:shadow-[0_0_20px_rgba(0,255,136,0.2)]"
-            >
-              {isCreating ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <>
-                  <Plus className="w-5 h-5" />
-                  <span>Create Room</span>
-                </>
-              )}
-            </button>
           </div>
         </div>
 
         <div className="md:col-span-2 glass p-8 rounded-3xl animate-slide-up border border-white/5" style={{ animationDelay: '0.1s' }}>
           <h2 className="text-xl font-display mb-6">Recent Sessions</h2>
-          <div className="flex flex-col items-center justify-center p-12 border border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
-            <p className="text-text-secondary font-light">No recent sessions found.</p>
-            <p className="text-sm text-text-secondary/60 mt-2">Create your first room to start engaging.</p>
-          </div>
+          
+          {rooms && rooms.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {rooms.map((room) => (
+                <div key={room.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-6 border border-white/10 rounded-2xl bg-white/[0.02] hover:bg-white/[0.04] transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-accent-secondary/20 flex items-center justify-center border border-accent-secondary/30">
+                      <Tv className="w-5 h-5 text-accent-secondary" />
+                    </div>
+                    <div>
+                      <div className="text-lg font-mono tracking-widest text-white">{room.code}</div>
+                      <div className="text-sm text-text-secondary font-light">
+                        {new Date(room.created_at).toLocaleDateString()} at {new Date(room.created_at).toLocaleTimeString()}
+                      </div>
+                    </div>
+                  </div>
+                  <Link href={`/${room.code}`} className="btn btn-secondary px-6 py-2 text-sm mt-4 md:mt-0">
+                    Rejoin Room
+                  </Link>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-12 border border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
+              <p className="text-text-secondary font-light">No recent sessions found.</p>
+              <p className="text-sm text-text-secondary/60 mt-2">Create your first room to start engaging.</p>
+            </div>
+          )}
         </div>
       </main>
 

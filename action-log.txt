@@ -1,0 +1,4 @@
+Trying to insert room HLU-KTP-WND for user b7590412-af11-4058-b9ea-4f0cb78a4376
+Success! Created room HLU-KTP-WND
+Trying to insert room XKT-YXZ-VPH for user b7590412-af11-4058-b9ea-4f0cb78a4376
+Success! Created room XKT-YXZ-VPH
