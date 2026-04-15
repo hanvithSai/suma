@@ -3,6 +3,9 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { AlertCircle, Users, Settings } from "lucide-react";
+import { AblyProvider } from "@/app/context/AblyContext";
+import HostView from "./components/HostView";
+import ParticipantView from "./components/ParticipantView";
 
 export default async function RoomPage({ params }: { params: Promise<{ code: string }> }) {
   const { code: rawCode } = await params;
@@ -71,9 +74,11 @@ export default async function RoomPage({ params }: { params: Promise<{ code: str
         </div>
       </nav>
 
-      <main className="flex-1 flex flex-col items-center justify-center p-8 z-10">
-        {isHost ? <HostView /> : <ParticipantView />}
-      </main>
+      <AblyProvider>
+        <main className="flex-1 flex flex-col items-center justify-center p-8 z-10">
+          {isHost ? <HostView roomCode={code} /> : <ParticipantView roomCode={code} />}
+        </main>
+      </AblyProvider>
 
       {/* Grid Pattern */}
       <div className="absolute inset-0 -z-20 opacity-[0.02] pointer-events-none">
@@ -106,42 +111,3 @@ function InvalidRoom({ code, reason }: { code: string, reason: string }) {
   );
 }
 
-function HostView() {
-  return (
-    <div className="max-w-2xl w-full text-center animate-fade-in">
-      <h2 className="text-4xl md:text-5xl font-display mb-6">Waiting for Participants</h2>
-      <p className="text-lg text-text-secondary font-light mb-12">
-        Share the code above with your audience. Once they join, their presence will be visible here.
-      </p>
-      
-      <div className="glass p-8 rounded-3xl border border-white/5 border-dashed bg-white/[0.02]">
-        <div className="text-text-secondary">
-           Admin controls, PDF upload, and slide synchronization will be integrated in upcoming features.
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ParticipantView() {
-  return (
-    <div className="max-w-2xl w-full text-center animate-fade-in">
-      <h2 className="text-4xl md:text-5xl font-display mb-6">Connected Successfully</h2>
-      <p className="text-lg text-text-secondary font-light mb-12">
-        You are now in the room. Waiting for the host to begin the session.
-      </p>
-      
-      <div className="glass p-8 rounded-3xl border border-white/5 relative overflow-hidden group">
-        <div className="absolute inset-0 bg-gradient-to-tr from-accent-primary/5 to-transparent group-hover:from-accent-primary/10 transition-colors" />
-        <div className="flex justify-center items-center h-32">
-          {/* Animated Waiting indicator */}
-          <div className="flex gap-2">
-             <div className="w-3 h-3 rounded-full bg-accent-primary animate-bounce" style={{ animationDelay: '0ms' }} />
-             <div className="w-3 h-3 rounded-full bg-accent-primary animate-bounce" style={{ animationDelay: '150ms' }} />
-             <div className="w-3 h-3 rounded-full bg-accent-primary animate-bounce" style={{ animationDelay: '300ms' }} />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}

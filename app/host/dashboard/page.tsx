@@ -52,7 +52,7 @@ export default async function HostDashboard() {
       <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1">
           <div className="glass p-8 rounded-3xl animate-slide-up flex flex-col gap-6 relative overflow-hidden group border border-white/5 hover:border-accent-primary/50 transition-colors">
-            <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
             <div className="w-14 h-14 rounded-2xl bg-accent-primary/20 flex items-center justify-center">
               <Zap className="w-6 h-6 text-accent-primary" fill="currentColor" />
             </div>
