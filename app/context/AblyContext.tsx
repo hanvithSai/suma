@@ -37,6 +37,7 @@ export const AblyProvider = ({ children }: { children: React.ReactNode }) => {
       setConnectionStatus("failed");
     });
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setClient(ably);
 
     return () => {

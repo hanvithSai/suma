@@ -35,7 +35,7 @@ export async function createRoomAction() {
     }
 
     return { code };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Catch Error:", error);
     return { error: "An unexpected error occurred." };
   }

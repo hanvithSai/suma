@@ -15,10 +15,13 @@ export default function HostView({ roomCode }: { roomCode: string }) {
 
     const updatePresence = async () => {
       const members = await channel.presence.get();
-      const list = members.map(m => ({
-        id: m.clientId || m.connectionId,
-        name: (m.data as any)?.name || "Anonymous"
-      }));
+      const list = members.map(m => {
+        const data = m.data as { name?: string };
+        return {
+          id: m.clientId || m.connectionId,
+          name: data?.name || "Anonymous"
+        };
+      });
       setParticipants(list);
     };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useAbly } from "@/app/context/AblyContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { generateAlias } from "@/utils/names";
@@ -29,6 +29,7 @@ export default function ParticipantView({ roomCode }: { roomCode: string }) {
       seed = guestSeed;
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAlias(generateAlias(seed));
   }, [user, authLoading, roomCode]);
   
