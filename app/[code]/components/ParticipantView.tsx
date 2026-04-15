@@ -2,16 +2,35 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useAbly } from "@/app/context/AblyContext";
+import { useAuth } from "@/app/context/AuthContext";
 import { generateAlias } from "@/utils/names";
 
 export default function ParticipantView({ roomCode }: { roomCode: string }) {
   const { client, connectionStatus } = useAbly();
+  const { user, loading: authLoading } = useAuth();
   const [alias, setAlias] = useState("");
   
   // Generate alias once on mount to avoid hydration mismatch
+  // Uses a combination of user ID and room code for deterministic naming
   useEffect(() => {
-    setAlias(generateAlias());
-  }, []);
+    if (authLoading) return;
+
+    let seed = "";
+    if (user) {
+      seed = `${user.id}-${roomCode}`;
+    } else {
+      // Fallback for guests: store a random seed in localStorage for this room
+      const storageKey = `suma-guest-seed-${roomCode}`;
+      let guestSeed = localStorage.getItem(storageKey);
+      if (!guestSeed) {
+        guestSeed = Math.random().toString(36).substring(2);
+        localStorage.setItem(storageKey, guestSeed);
+      }
+      seed = guestSeed;
+    }
+
+    setAlias(generateAlias(seed));
+  }, [user, authLoading, roomCode]);
   
   useEffect(() => {
     if (!client || connectionStatus !== "connected" || !alias) return;
