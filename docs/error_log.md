@@ -300,3 +300,95 @@ This document tracks significant issues, architectural blockers, and bugs encoun
 
 ### Prevention Strategy:
 - Always use a single, environment-aware utility for generating absolute URLs. Ensure that the authentication provider (Supabase) whitelist includes wildcard patterns (e.g., `https://*-domain.vercel.app/**`) to support dynamic deployments.
+
+---
+
+## Error ID: ERR-010
+**Date:** 2026-04-15  
+**Module/File:** `app/host/dashboard/page.tsx`  
+**Function Name:** N/A (UI)
+
+### Problem Description:
+- The "Create Room" button was totally unresponsive to mouse clicks, even though the code was correct and no errors appeared in the console.
+
+### Context:
+- **Environment:** Chrome/Localhost
+- **Problem:** A decorative background gradient overlay (`fixed inset-0`) lacked the correct pointer-events configuration, effectively acting as an invisible shield over the UI.
+
+### Root Cause:
+- `z-index` and `absolute/fixed` positioning without `pointer-events: none` on purely decorative layers.
+
+### Final Fix:
+- Added `pointer-events-none` to the overlay div.
+
+---
+
+## Error ID: ERR-011
+**Date:** 2026-04-15  
+**Module/File:** `app/globals.css`  
+**Function Name:** `.btn-secondary`
+
+### Problem Description:
+- Tailwind CSS Build Error: `Cannot apply unknown utility class glass`.
+
+### Context:
+- **Environment:** Tailwind CSS v4
+- **Problem:** In v4, `@apply` cannot be used to apply custom component-layer classes (`.glass`) within other component classes unless they are standard utilities.
+
+### Initial Attempt:
+- Attempted to move `@layer components` around.
+
+### Final Fix:
+- Manually expanded the `.glass` properties inside the `.btn-secondary` class definition.
+
+### Prevention Strategy:
+- In Tailwind v4, avoid nested `@apply` for custom classes. Use explicit CSS variables or properties for shared component styles.
+
+---
+
+## Error ID: ERR-012
+**Date:** 2026-04-15  
+**Module/File:** `app/[code]/components/ParticipantView.tsx`  
+**Function Name:** `ParticipantView`
+
+### Problem Description:
+- Next.js Hydration Error: Text content did not match between server and client.
+
+### Root Cause:
+- Random alias generation (`generateAlias()`) was called during the initial SSR render. Since it was random, the server-generated name never matched the client-generated name upon hydration.
+
+### Final Fix:
+- Deferred alias generation to a `useEffect` hook so it only triggers after the client has successfully hydrated with a stable (empty) state.
+
+---
+
+## Error ID: ERR-013
+**Date:** 2026-04-15  
+**Module/File:** `app/[code]/components/ParticipantView.tsx`  
+**Function Name:** `channel.presence.enter`
+
+### Problem Description:
+- Ably Runtime Error: `clientId must be specified to enter a presence channel`.
+
+### Root Cause:
+- The Ably client was initialized without a `clientId`. Ably Presence requires a unique identifier for each member to track them on a channel.
+
+### Final Fix:
+- Updated the `/api/ably-token` route to provide a `clientId`. Authenticated users use their Supabase ID; guests get a generated unique ID.
+
+---
+
+## Error ID: ERR-014
+**Date:** 2026-04-15  
+**Module/File:** N/A (Build Process)
+**Function Name:** `npm run build`
+
+### Problem Description:
+- Windows `EPERM` error: `operation not permitted, rmdir ...`.
+
+### Context:
+- **Environment:** Windows 11
+- **Problem:** Files in the `.next` directory were locked by the active `npm run dev` process or an IDE indexer, preventing the build script from cleaning the directory.
+
+### Final Fix:
+- Stopped all dev processes and manually cleared the `.next` folder using `Remove-Item -Recurse -Force .next`.
