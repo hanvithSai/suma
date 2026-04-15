@@ -16,15 +16,23 @@ import { useAuth } from "./context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [pin, setPin] = useState("");
+  const [code, setCode] = useState("");
   const { user } = useAuth();
   const router = useRouter();
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin.length === 6) {
-      window.location.href = `/room/${pin}`;
+    if (code.length === 11) {
+      window.location.href = `/${code}`;
     }
+  };
+
+  const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
+    let formatted = val;
+    if (val.length > 3) formatted = val.slice(0, 3) + '-' + val.slice(3);
+    if (val.length > 6) formatted = val.slice(0, 3) + '-' + val.slice(3, 6) + '-' + val.slice(6, 9);
+    setCode(formatted);
   };
 
   const handleHostInit = () => {
@@ -209,22 +217,22 @@ export default function Home() {
             <div className="glass p-12 rounded-3xl flex flex-col gap-8">
               <div>
                 <h3 className="text-3xl font-display mb-4">Participant</h3>
-                <p className="text-text-secondary font-light">Enter your 6-digit PIN to enter the room.</p>
+                <p className="text-text-secondary font-light">Enter your room code to enter the session.</p>
               </div>
 
               <form onSubmit={handleJoin} className="flex flex-col gap-6">
                 <input 
                   type="text" 
-                  placeholder="------" 
-                  maxLength={6}
-                  value={pin}
-                  onChange={(e) => setPin(e.target.value.toUpperCase())}
-                  className="pin-input w-full p-6 rounded-2xl border-2 text-4xl text-center tracking-[1rem] font-mono glass outline-none"
+                  placeholder="XXX-XXX-XXX" 
+                  maxLength={11}
+                  value={code}
+                  onChange={handleCodeChange}
+                  className="pin-input w-full p-6 rounded-2xl border-2 text-4xl text-center tracking-[0.5rem] font-mono glass outline-none uppercase"
                   style={{ borderColor: 'var(--glass-border)' }}
                 />
                 <button 
                   className="btn btn-primary py-6 text-xl" 
-                  disabled={pin.length !== 6}
+                  disabled={code.length !== 11}
                 >
                   Join Room <ArrowRight className="ml-2 w-6 h-6" />
                 </button>

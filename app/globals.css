@@ -141,4 +141,24 @@
     box-shadow: var(--neon-glow);
     background: rgba(255, 255, 255, 0.02);
   }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-2xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95;
+    font-family: var(--font-body);
+  }
+
+  .btn-primary {
+    @apply bg-accent-primary text-white shadow-lg hover:shadow-accent-primary/20 hover:-translate-y-0.5;
+    background: var(--accent-primary);
+  }
+
+  .btn-secondary {
+    @apply text-text-primary hover:border-accent-primary/50;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--card-shadow);
+  }
 }

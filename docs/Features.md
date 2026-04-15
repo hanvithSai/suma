@@ -57,8 +57,31 @@ This document provides a detailed history of every task and feature implemented 
     4. Whitelisted `lh3.googleusercontent.com` in `next.config.ts`.
 - **Summary:** A robust, secure, and production-tested login system is now live.
 
+### Feature 2: Dynamic Room Creation
+- **Requirement:** Allow authenticated hosts to initialize unique, shareable session rooms.
+- **Definition of Done:** Successful creation in Supabase, generation of a 9-digit stable code, and immediate redirect to the host dashboard.
+- **Implementation:**
+    - Next.js Server Actions for secure database insertion.
+    - Custom UI for "Create Room" with loading states and error handling.
+- **Challenge:** UI overlays intercepted button clicks on certain viewport sizes.
+- **Resolution:** Applied `pointer-events-none` to decorative gradient layers.
+- **Summary:** Hosts can now launch live engagement sessions in seconds.
+
+### Feature 3: Real-time Participant Presence & Alias System
+- **Requirement:** Hosts must see audience members joining in real-time without manual refreshes.
+- **Definition of Done:** Host view updates instantly with participant count and unique nicknames.
+- **Implementation:**
+    - Integrated Ably Presence for occupant tracking.
+    - Built a client-side `AblyProvider` to manage tokens and connections.
+    - Implemented the deterministic "Adjective + Animal" alias system for anonymous stable identities.
+- **Challenge:** Hydration mismatches caused by random name generation and missing `clientId` errors in Ably.
+- **Resolution:** 
+    - Defered alias generation to a client-side `useEffect`.
+    - Updated token route to provide stable IDs for every client.
+- **Summary:** The platform now feels "Alive" as participants join and interact.
+
 ---
 
-## Next Up: Sprint 1 Feature 2
+## Next Up: Sprint 1 Feature 4
 **Real-time PDF Viewer/Sync**
 - **Goal:** Broadcast and sync presentation slides across 1,000+ devices.
