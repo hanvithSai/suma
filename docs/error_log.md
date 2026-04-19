@@ -377,3 +377,23 @@ This document tracks significant issues, architectural blockers, and bugs encoun
 - Updated the `/api/ably-token` route to provide a `clientId`. Authenticated users use their Supabase ID; guests get a generated unique ID.
 
 ---
+
+---
+
+## Error ID: ERR-014
+**Date:** 2026-04-19  
+**Module/File:** `app/[code]/components/PDFUploadZone.tsx`  
+**Function Name:** `handleUpload`
+
+### Problem Description:
+- `StorageApiError: Bucket not found` when attempting to upload a PDF.
+
+### Root Cause:
+- The required Supabase Storage bucket `room-assets` was not created in the Supabase dashboard. Since the app uses the client-side SDK with a publishable key, it cannot auto-create buckets.
+
+### Final Fix:
+- Manually create the `room-assets` bucket in the Supabase Dashboard and set it to "Public".
+- (Optional) Use SQL to automate bucket creation if using a service role key.
+
+### Prevention Strategy:
+- Include infrastructure pre-requisites in the feature documentation and implementation plans.
