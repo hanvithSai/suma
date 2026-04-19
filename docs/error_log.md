@@ -380,6 +380,45 @@ This document tracks significant issues, architectural blockers, and bugs encoun
 
 ---
 
+## Error ID: ERR-015
+**Date:** 2026-04-19  
+**Module/File:** `PDFViewer.tsx`  
+**Function Name:** `pdfjs.GlobalWorkerOptions.workerSrc`
+
+### Problem Description:
+- PDF rendering fails with `Failed to fetch dynamically imported module` errors pointing to `unpkg.com`.
+
+### Context:
+- **Environment:** Next.js + Turbopack
+- **Dependency:** `pdfjs-dist@5.4.x`
+- **Problem:** Attempting to fetch the worker via an external CDN results in MIME-type mismatches, protocol failures, or DNS issues in certain network environments.
+
+### Current Impact:
+- PDF rendering is blocked, staying in a "Processing" state or fallback to a main-thread "fake worker" which degrades performance and UI responsiveness.
+
+### Prevention Strategy:
+- Internalize the worker asset. Physically copy the `pdf.worker.min.mjs` to the `/public` directory and point the `GlobalWorkerOptions` to a local origin path.
+
+---
+
+## Error ID: ERR-016
+**Date:** 2026-04-19  
+**Module/File:** `app/actions/room.ts`  
+**Function Name:** `fetchRoom` / `updateRoom`
+
+### Problem Description:
+- Supabase/PostgREST returns `PGRST204: Could not find the current_pdf_page column`.
+
+### Context:
+- **Environment:** Supabase / PostgREST
+- **Problem:** The client-side schema cache in the browser or the PostgREST server cache is stale, reporting that a newly added or renamed column does not exist.
+
+### Root Cause:
+- This often happens when database schemas are mutated (e.g. column renames from `current_page` to `current_pdf_page`) without a corresponding schema reload or if the code rollbacks to a version using a legacy column name.
+
+### Final Fix:
+- Manually verify table schema in the Supabase Dashboard and ensure column names are perfectly synchronized with the current code commit. If necessary, execute `NOTIFY pgrst, 'reload schema';` in the SQL editor.
+
 ## Error ID: ERR-014
 **Date:** 2026-04-19  
 **Module/File:** `app/[code]/components/PDFUploadZone.tsx`  
