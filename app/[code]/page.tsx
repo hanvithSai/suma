@@ -75,8 +75,12 @@ export default async function RoomPage({ params }: { params: Promise<{ code: str
       </nav>
 
       <AblyProvider>
-        <main className="flex-1 flex flex-col items-center justify-center p-8 z-10">
-          {isHost ? <HostView roomCode={code} /> : <ParticipantView roomCode={code} />}
+        <main className="flex-1 w-full flex flex-col items-center justify-center p-8 z-10">
+          {isHost ? (
+            <HostView roomCode={code} initialRoom={room} />
+          ) : (
+            <ParticipantView roomCode={code} initialRoom={room} />
+          )}
         </main>
       </AblyProvider>
 
