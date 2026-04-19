@@ -40,3 +40,45 @@ export async function createRoomAction() {
     return { error: "An unexpected error occurred." };
   }
 }
+
+/**
+ * Updates the PDF URL for a room.
+ */
+export async function updateRoomPDFAction(code: string, url: string | null) {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+
+    const { error } = await supabase
+      .from("rooms")
+      .update({ current_pdf_url: url, current_pdf_page: 1 })
+      .eq("code", code);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating room PDF:", error);
+    return { error: "Failed to update PDF info." };
+  }
+}
+
+/**
+ * Updates the current page of a room's PDF.
+ */
+export async function updateRoomPageAction(code: string, page: number) {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+
+    const { error } = await supabase
+      .from("rooms")
+      .update({ current_pdf_page: page })
+      .eq("code", code);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating room page:", error);
+    return { error: "Failed to update page info." };
+  }
+}

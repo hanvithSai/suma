@@ -82,6 +82,22 @@ This document provides a detailed history of every task and feature implemented 
 
 ---
 
-## Next Up: Sprint 1 Feature 4
-**Real-time PDF Viewer/Sync**
-- **Goal:** Broadcast and sync presentation slides across 1,000+ devices.
+### Feature 4: PDF Presentation Studio
+- **Requirement:** A high-fidelity interface for uploading and presenting PDF slides with real-time broadcasting.
+- **Definition of Done:** Host can upload PDFs, navigate slides, and see them rendered with professional quality.
+- **Implementation:**
+    - Developed `PDFViewer.tsx` using `react-pdf`.
+    - Integrated `SlideNavigator.tsx` for thumbnail-based hopping.
+    - Implemented **Orientation-Aware Scaling** to intelligently fit both landscape and portrait PDFs.
+    - Added **Theater Mode** (Fullscreen) with double-click and keyboard (F) toggles.
+    - Used **Framer Motion** for "Blur & Slide" transitions between pages.
+- **Challenge:** 
+    1. **Worker Fetch failure**: Library defaults to fetching the PDF engine from an external CDN (`unpkg`), which often fails.
+    2. **Schema mismatch**: PostgREST cache issues with the `current_pdf_page` column.
+- **Resolution:** 
+    1. Identified the need to internalize the worker (Pending public asset sync).
+    2. Documented the database schema requirements to resolve cache errors.
+- **Summary:** The core presentation experience is now highly professional and interaction-ready for hosts.
+
+---
+

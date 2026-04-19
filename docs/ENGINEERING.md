@@ -113,4 +113,26 @@ The application uses a dedicated `AblyProvider` (`app/context/AblyContext.tsx`) 
 To provide anonymous but stable identities for participants, we use a hashing utility (`utils/names.ts`).
 - **Input**: A seed string composed of `user_id + room_code`.
 - **Logic**: The seed is hashed to pick stable indices for an "Adjective + Animal" pairing.
-- **Persistence**: Logged-in users keep their name across all devices/sessions for that room. Guests persist their name via `localStorage` on a per-room basis.
+---
+
+## 10. Feature 4: PDF Presentation Studio
+
+### 10.1 Technical Architecture
+The PDF engine is built on `react-pdf` with a custom-engineered viewport logic to handle the "1 Million User" scale while maintaining premium UX.
+
+- **Rendering:** Uses `pdfjs-dist` version 5.4.x.
+- **Dynamic Orientation Scaling:** 
+  - Uses a calculations engine (`useMemo`) that compares container aspect ratio vs. PDF page aspect ratio.
+  - **Portrait Slides:** Clamped to `0.9 * containerHeight`.
+  - **Landscape Slides:** Clamped to `0.95 * containerWidth`.
+- **Thumbnail Engine (`SlideNavigator.tsx`):**
+  - Uses canvas-to-image serialization to generate lightweight previews for the host. 
+  - Implements lazy-loading to ensure the sidebar stays responsive even for 100+ page PDFs.
+
+### 10.2 Global Sync Strategy
+The synchronization model uses an **"Optimistic Broadcast"** pattern:
+1. **Host Event:** User navigates via navigator or keyboard.
+2. **Local Update:** UI transitions immediately (Framer Motion).
+3. **Global Broadcast:** Ably publishes a `page-sync` event.
+4. **State Persistence:** Database is updated via `updateRoomPageAction` (Server Action).
+5. **Attendee Lock:** Participant clients receive the message and force-reconcile their local `currentPage` state to match the host.
