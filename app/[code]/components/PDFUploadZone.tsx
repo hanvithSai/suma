@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Upload, FileText, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { Upload, AlertCircle, Loader2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
 interface PDFUploadZoneProps {
@@ -48,9 +48,10 @@ export default function PDFUploadZone({ roomCode, onUploadSuccess }: PDFUploadZo
         .getPublicUrl(data.path);
 
       onUploadSuccess(publicUrl);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Upload failed:", err);
-      setError(err.message || "Upload failed. Does 'room-assets' bucket exist?");
+      const message = err instanceof Error ? err.message : "Upload failed. Does 'room-assets' bucket exist?";
+      setError(message);
     } finally {
       setIsUploading(false);
     }

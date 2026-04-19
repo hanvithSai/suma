@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useAbly } from "@/app/context/AblyContext";
-import { Users, Tv, Presentation, X, Settings2 } from "lucide-react";
+import { Users, Presentation, X, Settings2 } from "lucide-react";
 import PDFUploadZone from "./PDFUploadZone";
 import dynamic from "next/dynamic";
 import { updateRoomPDFAction, updateRoomPageAction } from "@/app/actions/room";
@@ -17,9 +17,11 @@ const PDFViewer = dynamic(() => import("./PDFViewer"), {
   ),
 });
 
+import { Room } from "@/types/room";
+
 interface HostViewProps {
   roomCode: string;
-  initialRoom: any;
+  initialRoom: Room;
 }
 
 export default function HostView({ roomCode, initialRoom }: HostViewProps) {

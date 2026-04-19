@@ -17,9 +17,11 @@ const PDFViewer = dynamic(() => import("./PDFViewer"), {
   ),
 });
 
+import { Room } from "@/types/room";
+
 interface ParticipantViewProps {
   roomCode: string;
-  initialRoom: any;
+  initialRoom: Room;
 }
 
 export default function ParticipantView({ roomCode, initialRoom }: ParticipantViewProps) {
@@ -126,7 +128,7 @@ export default function ParticipantView({ roomCode, initialRoom }: ParticipantVi
           <div>
             <h3 className="text-2xl font-display text-white mb-3">Waiting for Presentation</h3>
             <p className="text-text-secondary font-light leading-relaxed">
-              The host hasn't shared a presentation yet. Relax and get ready—the session will begin shortly.
+              The host hasn&apos;t shared a presentation yet. Relax and get ready—the session will begin shortly.
             </p>
           </div>
 
